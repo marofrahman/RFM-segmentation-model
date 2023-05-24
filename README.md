@@ -1,5 +1,5 @@
 # RFM segmentation model #
-#### The aim of this project was to create a suitable customer segmentation model on exisisting customer information to improve marketing efforts via personalised email recommendations. The choice of segmentation used was a modified RFM model. ####
+#### The aim of this project was to create a suitable customer segmentation model on exisisting user information to improve marketing efforts via personalised email recommendations. The choice of segmentation used was a modified RFM model. ####
 
 Alongisde the GSOT of this project, the below KPIs were calculated for each segment to compare how customer behaviour changed over time:
 * Average User Spend per Order
