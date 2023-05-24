@@ -1,0 +1,65 @@
+--filter the data
+
+WITH dataset AS 
+(
+SELECT 
+  user_crm_id, transaction_id, date, transaction_total
+FROM Prism_Main.transactions WHERE user_crm_id IS NOT NULL AND date BETWEEN '2022-01-01' AND '2022-12-31'
+),
+
+-- examine the dataset
+
+--SELECT 
+  --user_crm_id, transaction_id, date, transaction_total, COUNT(transaction_id) OVER(PARTITION BY user_crm_id, transaction_id)
+--FROM dataset
+
+-- summarise
+
+Order_Summary AS
+(
+  SELECT
+    user_crm_id, transaction_id, date,
+    AVG(transaction_total) AS Avg_Sales,
+    SUM(transaction_total) AS Total_Sales,
+  FROM dataset GROUP BY user_crm_id, transaction_id, date
+),
+
+-- F&M segments
+
+Segments AS 
+(
+SELECT
+  OS.user_crm_id,
+  COUNT(OS.transaction_id) AS Frequency,
+  ROUND(AVG(OS.Avg_Sales),2) AS Monetary_Avg,
+  ROUND(SUM(OS.Total_Sales),2) AS Monetary_Total,
+
+  -- NTILE(3) OVER (ORDER BY COUNT(OS.transaction_id) ASC) F_Score,
+
+  CASE
+    WHEN COUNT(OS.transaction_id) = 1 THEN 1
+    WHEN COUNT(OS.transaction_id) BETWEEN 2 AND 9 THEN 2
+    ELSE 3
+  END AS F_Score,
+
+  NTILE(3) OVER (ORDER BY ROUND(AVG(OS.Avg_Sales),2) ASC) M_Score,
+  CASE
+    WHEN COUNT(OS.transaction_id) = 1 THEN 1
+    WHEN COUNT(OS.transaction_id) BETWEEN 2 AND 9 THEN 2
+    ELSE 3
+  END + NTILE(3) OVER (ORDER BY ROUND(AVG(OS.Avg_Sales),2) ASC) AS Tally
+FROM Order_Summary OS
+GROUP BY OS.user_crm_id ORDER BY 1, 3 DESC
+)
+
+SELECT * FROM Segments
+
+-- Average Total Lifetime Value per segment
+
+--SELECT Tally AS Segment, ROUND(AVG(Monetary_Total),2) AS Avg_Lifetime_Value from Segments GROUP BY 1 ORDER BY 1 ASC
+
+-- Total Sales Proportions by Segment
+
+--SELECT Tally AS Segment, ROUND(SUM(Monetary_Total),2) AS Total_Sales_Values,
+--ROUND(SUM(Monetary_Total)*100 / 10166508.190012636,2) AS Proportions
+--FROM Segments GROUP BY 1 ORDER BY 1 ASC
