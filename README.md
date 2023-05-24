@@ -7,16 +7,16 @@ Alongisde the GSOT of this project, the below KPIs were calculated for each segm
 * Average Customer Life Value
 * % of User Opt-Ins
 
-Below is a schema of how the customer base was segmented via RFM:
+Below is a schema of how the customer base was segmented via the **frequency** and **monetary** elements of RFM.
 
 Score | Frequency | Monetary
 :---: | :-------: | :------:
   1   |     1     | 0 - 33%
   2   | 2 - 9     | 33 - 66%
-  3   | 10+       | 66-100%
+  3   | 10+       | 66 - 100%
 
 
-Using this *modified* RFM scoring system we were able to segment the customer base and personalise recommendations for these seperate groups.
+Using this scoring system we were able to segment the customer base and personalise recommendations for these seperate groups such as offering group discounting to raise frequency or to apply free delivery at checkout to increase expenditure.
 
 Below are the finalised dashboards used in the reports of the projects:
 
