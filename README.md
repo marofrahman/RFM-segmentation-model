@@ -17,3 +17,8 @@ Score | Frequency | Monetary
 
 
 Using this *modified* RFM scoring system we were able to segment the customer base and personalise recommendations for these seperate groups.
+
+Below are the finalised dashboards used in the reports of the projects:
+
+![segment0](https://github.com/marofrahman/RFM-segmentation-model/assets/134495772/372a319c-b351-4024-b4e3-916a388793cb)
+![segment1](https://github.com/marofrahman/RFM-segmentation-model/assets/134495772/5553129c-ec2e-4fcb-b51d-5795a895cae3)
