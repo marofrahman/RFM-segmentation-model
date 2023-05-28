@@ -1,0 +1,48 @@
+WITH temp AS
+ (SELECT
+ EXTRACT(MONTH FROM date) AS Month,
+ COUNT(DISTINCT session_id) AS ViewItem
+ FROM `prism-2023-c1.Prism_Main.funnelevents`
+ WHERE event_name = 'view_item'
+  AND EXTRACT(YEAR FROM date) = 2022
+ GROUP BY 1
+),
+-- This second table is for Purchase numbers
+temp2 AS
+ (SELECT
+ EXTRACT(MONTH FROM date) AS Month,
+ COUNT(DISTINCT transaction_id) AS Purchase
+ FROM `prism-2023-c1.Prism_Main.funnelevents`
+ WHERE event_name = 'purchase'
+ AND EXTRACT(YEAR FROM date) = 2022
+ GROUP BY 1
+),
+-- This third table is for Add to Cart numbers
+temp3 AS
+ (SELECT
+ EXTRACT(MONTH FROM date) AS Month,
+ COUNT(DISTINCT session_id) AS AddToCart
+ FROM `prism-2023-c1.Prism_Main.funnelevents`
+ WHERE event_name = 'add_to_cart'
+ AND EXTRACT(YEAR FROM date) = 2022
+ GROUP BY 1
+),
+-- This final table is for Total Visits to the website
+temp4 AS
+ (SELECT
+ EXTRACT(MONTH FROM date) AS Month,
+ COUNT(DISTINCT session_id) AS TotalVisits
+ FROM `prism-2023-c1.Prism_Main.sessions`
+ where EXTRACT(YEAR FROM date) = 2022
+ GROUP BY 1
+)
+-- Joining the 4 tables together to get the columns
+
+SELECT temp.*, temp2.Purchase, temp3.AddToCart, temp4.TotalVisits
+FROM temp
+JOIN temp2
+ON temp.Month = temp2.Month
+JOIN temp3
+ON temp.Month = temp3.Month
+JOIN temp4
+ON temp.Month = temp4.Month
